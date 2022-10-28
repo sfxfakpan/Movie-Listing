@@ -3,7 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
-    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -60,34 +59,9 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.2"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.2"
 
-    //hilt for DI
-    def hilt_version = '2.38.1'
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
-
-    //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation ("com.squareup.okhttp3:okhttp:4.9.0"){
-        force = true //API 19 support
-    }
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
-
-
     //Paging
     def paging_version = "3.1.1"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
-    //Room
-    def roomVersion = "2.4.1"
-    implementation("androidx.room:room-runtime:$roomVersion") {
-        exclude group: 'com.google.code.gson'
-    }
-    implementation("androidx.room:room-ktx:$roomVersion") {
-        exclude group: 'com.google.code.gson'
-    }
-    kapt "androidx.room:room-compiler:$roomVersion"
-    androidTestImplementation("androidx.room:room-testing:$roomVersion") {
-        exclude group: 'com.google.code.gson'
-    }
+    implementation project(':core')
 }

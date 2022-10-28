@@ -1,7 +1,8 @@
-package com.francis.movielisting
+package com.francis.movielisting.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.francis.movielisting.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
