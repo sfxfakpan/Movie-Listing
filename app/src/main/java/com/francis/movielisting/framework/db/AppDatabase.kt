@@ -4,11 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.francis.movielisting.framework.db.dao.MovieDao
-import com.francis.movielisting.framework.db.dao.RemoteKeyDao
-import com.francis.movielisting.framework.db.table.MovieEntity
+import com.francis.core.data.db.Movie
+import com.francis.core.data.db.RemoteKey
+import com.francis.core.data.db.dao.MovieDao
+import com.francis.core.data.db.dao.RemoteKeyDao
 
-@Database(entities = [MovieEntity::class], exportSchema = false, version = 1)
+@Database(
+    entities = [Movie::class, RemoteKey::class],
+    exportSchema = false,
+    version = 1
+)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao

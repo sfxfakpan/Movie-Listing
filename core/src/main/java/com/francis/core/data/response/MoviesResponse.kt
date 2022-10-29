@@ -1,7 +1,7 @@
 package com.francis.core.data.response
 
 import androidx.annotation.Keep
-import com.francis.core.data.Movie
+import com.francis.core.data.db.Movie
 import com.google.gson.annotations.SerializedName
 
 @Keep

@@ -4,8 +4,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.francis.core.data.Movie
-import com.francis.core.data.RemoteKey
+import com.francis.core.data.db.Movie
+import com.francis.core.data.db.RemoteKey
 import retrofit2.HttpException
 import java.io.IOException
 import java.io.InvalidObjectException
@@ -37,20 +37,23 @@ class RemoteMediatorDataSource @Inject constructor(
 
         try {
             val response = moviesRemoteDataSource.fetchMovies(page)
-            val isEndOfList = response.isEmpty()
-            // clear all tables in the database
-            if (loadType == LoadType.REFRESH) {
-                remoteKeyDataSource.nuke()
-                moviesLocalDataSource.nuke()
-            }
-            val prevKey = if (page == DEFAULT_PAGE_INDEX) null else page - 1
-            val nextKey = if (isEndOfList) null else page + 1
-            val keys = response.map {
-                RemoteKey(movieId = it.id, prevKey = prevKey, nextKey = nextKey)
-            }
-            remoteKeyDataSource.insertAll(keys)
-            moviesLocalDataSource.insertAll(response)
-            return MediatorResult.Success(endOfPaginationReached = isEndOfList)
+            if (response.isSuccessful && response.body() != null) {
+                val data = response.body()!!
+                val isEndOfList = data.results.isNullOrEmpty()
+                // clear all tables in the database
+                if (loadType == LoadType.REFRESH) {
+                    remoteKeyDataSource.nuke()
+                    moviesLocalDataSource.nuke()
+                }
+                val prevKey = if (page == DEFAULT_PAGE_INDEX) null else page - 1
+                val nextKey = if (isEndOfList) null else page + 1
+                val keys = data.results.map {
+                    RemoteKey(movieId = it.id, prevKey = prevKey, nextKey = nextKey)
+                }
+                remoteKeyDataSource.insertAll(keys)
+                moviesLocalDataSource.insertAll(data.results)
+                return MediatorResult.Success(endOfPaginationReached = isEndOfList)
+            } else return MediatorResult.Error(InvalidObjectException(response.message()))
         } catch (exception: IOException) {
             return MediatorResult.Error(exception)
         } catch (exception: HttpException) {

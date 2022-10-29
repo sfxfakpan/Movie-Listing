@@ -1,15 +1,15 @@
 package com.francis.core.datasource
 
 import androidx.paging.PagingSource
-import com.francis.core.data.Movie
+import com.francis.core.data.db.Movie
 
 interface MoviesLocalDataSource {
 
-    fun insertAll(movies: List<Movie>)
+    suspend fun insertAll(movies: List<Movie>)
 
-    fun get(id: Int): Movie?
+    suspend fun get(id: Int): Movie?
 
     fun getAll(): PagingSource<Int, Movie>
 
-    fun nuke()
+    suspend fun nuke()
 }

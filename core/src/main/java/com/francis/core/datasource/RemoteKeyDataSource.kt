@@ -1,6 +1,6 @@
 package com.francis.core.datasource
 
-import com.francis.core.data.RemoteKey
+import com.francis.core.data.db.RemoteKey
 
 interface RemoteKeyDataSource {
 

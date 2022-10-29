@@ -1,9 +1,9 @@
 package com.francis.movielisting.framework.di
 
 import android.content.Context
+import com.francis.core.data.db.dao.MovieDao
+import com.francis.core.data.db.dao.RemoteKeyDao
 import com.francis.movielisting.framework.db.AppDatabase
-import com.francis.movielisting.framework.db.dao.MovieDao
-import com.francis.movielisting.framework.db.dao.RemoteKeyDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

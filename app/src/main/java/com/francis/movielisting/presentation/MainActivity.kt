@@ -1,7 +1,7 @@
 package com.francis.movielisting.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.francis.movielisting.R
 
 class MainActivity : AppCompatActivity() {

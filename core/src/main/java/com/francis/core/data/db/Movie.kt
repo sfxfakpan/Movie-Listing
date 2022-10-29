@@ -1,14 +1,21 @@
-package com.francis.core.data
+package com.francis.core.data.db
 
 import android.os.Parcelable
 import androidx.annotation.Keep
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.francis.core.data.Genre
+import com.francis.core.data.db.converter.GenreConverter
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Keep
 @Parcelize
+@Entity(tableName = "movies")
 data class Movie(
     @SerializedName("id")
+    @PrimaryKey
     var id: Int,
 
     @SerializedName("poster_path")
@@ -39,5 +46,6 @@ data class Movie(
     var overview: String?,
 
     @SerializedName("genres")
+    @TypeConverters(GenreConverter::class)
     var genres: List<Genre>?
 ) : Parcelable

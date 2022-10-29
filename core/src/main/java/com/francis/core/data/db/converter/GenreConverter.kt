@@ -1,4 +1,4 @@
-package com.francis.movielisting.framework.db.converter
+package com.francis.core.data.db.converter
 
 import androidx.annotation.Keep
 import androidx.room.TypeConverter
