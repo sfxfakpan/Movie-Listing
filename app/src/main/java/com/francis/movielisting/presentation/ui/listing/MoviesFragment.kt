@@ -1,4 +1,4 @@
-package com.francis.movielisting.presentation
+package com.francis.movielisting.presentation.ui.listing
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.francis.movielisting.databinding.FragmentMoviesBinding
+import com.francis.movielisting.presentation.BaseFragment
 import com.francis.movielisting.presentation.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,9 +29,9 @@ class MoviesFragment : BaseFragment(false) {
         return binding.root
     }
 
-    private fun navigateToMovieDetails(movieId: Int) {
+    private fun navigateToMovieDetails(movieId: Int, title: String) {
         val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
-            movieId
+            movieId, title
         )
         findNavController().navigate(action)
     }
@@ -38,6 +39,6 @@ class MoviesFragment : BaseFragment(false) {
     override fun setupViewModelObservers() {
         viewModel.goToMovieDetailsEvent.observe(
             viewLifecycleOwner,
-            EventObserver { navigateToMovieDetails(it.id) })
+            EventObserver { navigateToMovieDetails(it.id, it.title) })
     }
 }

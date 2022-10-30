@@ -8,7 +8,7 @@
 
         <variable
             name="viewmodel"
-            type="com.francis.movielisting.presentation.MovieDetailsViewModel" />
+            type="com.francis.movielisting.presentation.ui.detail.MovieDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -45,6 +45,18 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
+    // mocking library
+    def mockkVersion = '1.10.0'
+    testImplementation "io.mockk:mockk:$mockkVersion"
+
+    // android jetpack testing
+    testImplementation 'android.arch.core:core-testing:1.1.1'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+
     //retrofit
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.retrofit2:converter-gson:2.9.0'

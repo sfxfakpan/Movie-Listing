@@ -12,7 +12,6 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "movies")
 data class Movie(
     @SerializedName("id")
-    @PrimaryKey
     var id: Int,
 
     @SerializedName("poster_path")
@@ -21,6 +20,7 @@ data class Movie(
     @SerializedName("backdrop_path")
     var backdropPath: String?,
 
+    @PrimaryKey
     @SerializedName("title")
     var title: String,
 

@@ -20,13 +20,13 @@ class MovieRepository @Inject constructor(
     @OptIn(ExperimentalPagingApi::class)
     fun getMoviesFlow(): Flow<PagingData<Movie>> {
         return Pager(
-            config = PagingConfig(pageSize = 100, prefetchDistance = 3),
+            config = PagingConfig(pageSize = 20, prefetchDistance = 3),
             pagingSourceFactory = { moviesLocalDataSource.getAll() },
             remoteMediator = mediatorDataSource
         ).flow
     }
 
-    suspend fun getMovie(id: Int) =
+    fun getMovie(id: Int) =
         moviesLocalDataSource.get(id)
 
     suspend fun fetchMovieCasts(id: Int) =
@@ -34,5 +34,11 @@ class MovieRepository @Inject constructor(
 
     suspend fun fetchMovieVideos(id: Int) =
         moviesRemoteDataSource.fetchMovieVideos(id)
+
+    suspend fun fetchMovieDetails(id: Int) =
+        moviesRemoteDataSource.fetchMovieDetails(id)
+
+    suspend fun updateMovieDetails(movie: Movie) =
+        moviesLocalDataSource.update(movie)
 
 }

@@ -6,7 +6,7 @@
 
         <variable
             name="viewmodel"
-            type="com.francis.movielisting.presentation.MoviesViewModel" />
+            type="com.francis.movielisting.presentation.ui.listing.MoviesViewModel" />
     </data>
 
 

@@ -1,12 +1,10 @@
 package com.francis.movielisting.framework
 
-import com.francis.core.usecase.GetMovie
-import com.francis.core.usecase.GetMovieCast
-import com.francis.core.usecase.GetMovieVideos
-import com.francis.core.usecase.GetMoviesFlow
+import com.francis.core.usecase.*
 import javax.inject.Inject
 
 data class UseCases @Inject constructor(
+    val updateMovieDetails: FetchNUpdate,
     val getMovieVideos: GetMovieVideos,
     val getMoviesFlow: GetMoviesFlow,
     val getMovieCast: GetMovieCast,

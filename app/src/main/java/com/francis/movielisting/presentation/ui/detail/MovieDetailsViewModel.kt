@@ -1,9 +1,6 @@
-package com.francis.movielisting.presentation
+package com.francis.movielisting.presentation.ui.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import com.francis.core.data.Cast
 import com.francis.core.data.Video
 import com.francis.core.data.db.Movie
@@ -16,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    val useCases: UseCases
+    private val useCases: UseCases
 ): ViewModel(), GoToVideo {
 
     lateinit var movie: LiveData<Movie?>
@@ -26,9 +23,11 @@ class MovieDetailsViewModel @Inject constructor(
     override val goToVideoEvent: MutableLiveData<Event<Video>> = MutableLiveData()
 
     fun init(movieId: Int) {
+
         movie = liveDataBlockScope {
             useCases.getMovie(movieId).asLiveData()
         }
+        useCases.updateMovieDetails(movieId, viewModelScope)
 
         videoList = liveDataBlockScope {
             useCases.getMovieVideos(movieId).asLiveData()

@@ -7,7 +7,7 @@
         <entry key="app/src/main/res/font/nunito.xml" value="0.4546875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/fragment_movie_details.xml" value="0.4244791666666667" />
-        <entry key="app/src/main/res/layout/fragment_movies.xml" value="0.4244791666666667" />
+        <entry key="app/src/main/res/layout/fragment_movies.xml" value="0.2794759825327511" />
         <entry key="app/src/main/res/layout/item_loader.xml" value="0.375" />
         <entry key="app/src/main/res/layout/list_item_cast.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/list_item_movie_grid.xml" value="0.4244791666666667" />

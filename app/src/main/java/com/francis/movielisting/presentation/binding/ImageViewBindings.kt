@@ -3,8 +3,13 @@ package com.francis.movielisting.presentation.binding
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import coil.load
+import coil.request.CachePolicy
+import coil.request.ErrorResult
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import coil.transform.RoundedCornersTransformation
 import com.francis.movielisting.R
 import com.francis.movielisting.framework.service.Api
@@ -20,7 +25,16 @@ fun ImageView.bindBackdropImageWithPicassoLoading(path: String?, progressBar: Pr
         crossfade(true)
         transformations(RoundedCornersTransformation(4f, 1f))
         error(R.drawable.ic_baseline_image_24)
+        diskCachePolicy(CachePolicy.ENABLED)
+        listener(object: ImageRequest.Listener {
+            override fun onSuccess(request: ImageRequest, result: SuccessResult) {
+                progressBar.isVisible = false
+            }
 
+            override fun onError(request: ImageRequest, result: ErrorResult) {
+                progressBar.isVisible = false
+            }
+        })
     }
 }
 

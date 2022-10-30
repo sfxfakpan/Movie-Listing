@@ -1,5 +1,6 @@
 package com.francis.movielisting.framework.service
 
+import com.francis.core.data.db.Movie
 import com.francis.core.data.response.CreditsResponse
 import com.francis.core.data.response.MoviesResponse
 import com.francis.core.data.response.VideosResponse
@@ -34,5 +35,8 @@ object Api {
 
         @GET("/$API_VERSION/movie/{id}/videos")
         suspend fun fetchVideos(@Path("id") id: Int): Response<VideosResponse>
+
+        @GET("/$API_VERSION/movie/{id}")
+        suspend fun fetchDetails(@Path("id") id: Int): Response<Movie>
     }
 }

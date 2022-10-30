@@ -1,6 +1,7 @@
 package com.francis.core.datasource
 
 
+import com.francis.core.data.db.Movie
 import com.francis.core.data.response.CreditsResponse
 import com.francis.core.data.response.MoviesResponse
 import com.francis.core.data.response.VideosResponse
@@ -13,4 +14,6 @@ interface MoviesRemoteDataSource {
     suspend fun fetchMovieVideos(id: Int): Response<VideosResponse>
 
     suspend fun fetchMovieCasts(id: Int): Response<CreditsResponse>
+
+    suspend fun fetchMovieDetails(id: Int): Response<Movie>
 }

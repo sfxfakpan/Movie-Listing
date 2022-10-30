@@ -1,5 +1,6 @@
 package com.francis.movielisting.framework.datasource
 
+import com.francis.core.data.db.Movie
 import com.francis.core.data.response.CreditsResponse
 import com.francis.core.data.response.MoviesResponse
 import com.francis.core.data.response.VideosResponse
@@ -22,5 +23,9 @@ class RetrofitDataSource @Inject constructor(
 
     override suspend fun fetchMovieCasts(id: Int): Response<CreditsResponse> {
         return apiClient.service.fetchCredits(id)
+    }
+
+    override suspend fun fetchMovieDetails(id: Int): Response<Movie> {
+        return apiClient.service.fetchDetails(id)
     }
 }
