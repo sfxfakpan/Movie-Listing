@@ -16,7 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", "TMDB_API_KEY", getApiKey()
+        buildConfigField "String", "API_KEY", getApiKey()
         buildConfigField "String", "API_URL", "\"https://api.themoviedb.org/\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,7 +49,7 @@ def getApiKey() {
     def file = rootProject.file("local.properties")
     def localProperties = new Properties()
     localProperties.load(new FileInputStream(file))
-    def apiKey = localProperties['tmdb_api_key']
+    def apiKey = localProperties['API_KEY']
     if (apiKey == null) {
         logger.error("You need to either place appropriate local.properties or set proper environment variables for API key")
     }
