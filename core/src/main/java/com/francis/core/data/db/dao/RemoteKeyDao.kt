@@ -17,4 +17,10 @@ interface RemoteKeyDao {
 
     @Query("DELETE FROM remote_key")
     suspend fun clearRemoteKeys()
+
+    @Query("SELECT COUNT(movieId) FROM remote_key")
+    fun getCount(): Int?
+
+    @Query("SELECT * FROM remote_key ORDER BY nextKey DESC LIMIT 1")
+    fun getLastOrNull(): RemoteKey?
 }

@@ -12,7 +12,7 @@ class RetrofitDataSource @Inject constructor(
     private val apiClient: ApiClient
 ): MoviesRemoteDataSource{
 
-    override suspend fun fetchMovies(page: Int): Response<MoviesResponse> {
+    override suspend fun fetchMovies(page: Int?): Response<MoviesResponse> {
         return apiClient.service.fetchDiscoverList(page)
     }
 

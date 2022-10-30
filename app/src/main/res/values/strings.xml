@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Movie Listing</string>
+    <string name="movie_image">movie image</string>
+    <string name="videos">VIDEOS</string>
+    <string name="cast">CAST</string>
+    <string name="cast_image">cast image</string>
+    <string name="video">video</string>
+    <string name="label_error">Something went wrong, please try again</string>
+    <string name="button_retry">Retry</string>
 </resources>

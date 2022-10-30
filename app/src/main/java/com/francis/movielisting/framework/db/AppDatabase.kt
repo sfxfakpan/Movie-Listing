@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.francis.core.data.db.Movie
 import com.francis.core.data.db.RemoteKey
+import com.francis.core.data.db.converter.GenreConverter
 import com.francis.core.data.db.dao.MovieDao
 import com.francis.core.data.db.dao.RemoteKeyDao
 
@@ -14,6 +16,7 @@ import com.francis.core.data.db.dao.RemoteKeyDao
     exportSchema = false,
     version = 1
 )
+@TypeConverters(GenreConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao

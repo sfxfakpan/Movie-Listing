@@ -16,6 +16,14 @@ class RemoteKeyRoomDataSource @Inject constructor(
         return dao.getRemoteKey(id)
     }
 
+    override suspend fun getLastOrNull(): RemoteKey? {
+        return dao.getLastOrNull()
+    }
+
+    override suspend fun getCount(): Int? {
+        return dao.getCount()
+    }
+
     override suspend fun nuke() {
         dao.clearRemoteKeys()
     }

@@ -54,7 +54,7 @@ dependencies {
     api 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
     //Room
-    def roomVersion = "2.4.1"
+    def roomVersion = "2.4.3"
     api("androidx.room:room-runtime:$roomVersion") {
         exclude group: 'com.google.code.gson'
     }
@@ -65,9 +65,10 @@ dependencies {
     androidTestImplementation("androidx.room:room-testing:$roomVersion") {
         exclude group: 'com.google.code.gson'
     }
+    api "androidx.room:room-paging:$roomVersion"
 
     //hilt for DI
-    def hilt_version = '2.38.1'
+    def hilt_version = '2.41'
     api "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 

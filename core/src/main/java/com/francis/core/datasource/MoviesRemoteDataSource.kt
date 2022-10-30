@@ -8,7 +8,7 @@ import retrofit2.Response
 
 interface MoviesRemoteDataSource {
 
-    suspend fun fetchMovies(page: Int): Response<MoviesResponse>
+    suspend fun fetchMovies(page: Int?): Response<MoviesResponse>
 
     suspend fun fetchMovieVideos(id: Int): Response<VideosResponse>
 

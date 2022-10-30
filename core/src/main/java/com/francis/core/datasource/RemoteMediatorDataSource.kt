@@ -1,11 +1,14 @@
 package com.francis.core.datasource
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.francis.core.data.db.Movie
 import com.francis.core.data.db.RemoteKey
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 import java.io.InvalidObjectException
@@ -18,25 +21,34 @@ class RemoteMediatorDataSource @Inject constructor(
     private val moviesRemoteDataSource: MoviesRemoteDataSource
 ): RemoteMediator<Int, Movie>(){
 
-    private val DEFAULT_PAGE_INDEX = 1
-
     override suspend fun initialize(): InitializeAction {
-        return InitializeAction.LAUNCH_INITIAL_REFRESH
+        val count = withContext(Dispatchers.IO) { remoteKeyDataSource.getCount() }
+        return if (count != null && count > 0) InitializeAction.SKIP_INITIAL_REFRESH
+        else InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Movie>): MediatorResult {
 
-        val page = when (val pageKeyData = getKeyPageData(loadType, state)) {
-            is MediatorResult.Success -> {
-                return pageKeyData
+        val loadKey = when (loadType) {
+            LoadType.REFRESH -> null
+            // In this example, you never need to prepend, since REFRESH
+            // will always load the first page in the list. Immediately
+            // return, reporting end of pagination.
+            LoadType.PREPEND ->{
+                Log.d(javaClass.simpleName, "load: prepend")
+                return MediatorResult.Success(endOfPaginationReached = true)
             }
-            else -> {
-                pageKeyData as Int
+            LoadType.APPEND -> {
+                val item = withContext(Dispatchers.IO) { remoteKeyDataSource.getLastOrNull() }
+                    ?: return MediatorResult.Success(endOfPaginationReached = true)
+
+                Log.d(javaClass.simpleName, "load: $item")
+                item.nextKey
             }
         }
 
         try {
-            val response = moviesRemoteDataSource.fetchMovies(page)
+            val response = moviesRemoteDataSource.fetchMovies(loadKey)
             if (response.isSuccessful && response.body() != null) {
                 val data = response.body()!!
                 val isEndOfList = data.results.isNullOrEmpty()
@@ -45,8 +57,8 @@ class RemoteMediatorDataSource @Inject constructor(
                     remoteKeyDataSource.nuke()
                     moviesLocalDataSource.nuke()
                 }
-                val prevKey = if (page == DEFAULT_PAGE_INDEX) null else page - 1
-                val nextKey = if (isEndOfList) null else page + 1
+                val prevKey = if (loadKey == null) null else loadKey - 1
+                val nextKey = if (isEndOfList) null else (loadKey ?: 1) + 1
                 val keys = data.results.map {
                     RemoteKey(movieId = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
@@ -58,61 +70,6 @@ class RemoteMediatorDataSource @Inject constructor(
             return MediatorResult.Error(exception)
         } catch (exception: HttpException) {
             return MediatorResult.Error(exception)
-        }
-    }
-
-    /**
-     * this returns the page key or the final end of list success result
-     */
-    private suspend fun getKeyPageData(loadType: LoadType, state: PagingState<Int, Movie>): Any? {
-        return when (loadType) {
-            LoadType.REFRESH -> {
-                val remoteKeys = getClosestRemoteKey(state)
-                remoteKeys?.nextKey?.minus(1) ?: DEFAULT_PAGE_INDEX
-            }
-            LoadType.APPEND -> {
-                val remoteKeys = getLastRemoteKey(state)
-                    ?: throw InvalidObjectException("Remote key should not be null for $loadType")
-                remoteKeys.nextKey
-            }
-            LoadType.PREPEND -> {
-                val remoteKeys = getFirstRemoteKey(state)
-                    ?: throw InvalidObjectException("Invalid state, key should not be null")
-                //end of list condition reached
-                remoteKeys.prevKey ?: return MediatorResult.Success(endOfPaginationReached = true)
-                remoteKeys.prevKey
-            }
-        }
-    }
-
-    /**
-     * get the last remote key inserted which had the data
-     */
-    private suspend fun getLastRemoteKey(state: PagingState<Int, Movie>): RemoteKey? {
-        return state.pages
-            .lastOrNull { it.data.isNotEmpty() }
-            ?.data?.lastOrNull()
-            ?.let { movie -> remoteKeyDataSource.get(movie.id) }
-    }
-
-    /**
-     * get the first remote key inserted which had the data
-     */
-    private suspend fun getFirstRemoteKey(state: PagingState<Int, Movie>): RemoteKey? {
-        return state.pages
-            .firstOrNull { it.data.isNotEmpty() }
-            ?.data?.firstOrNull()
-            ?.let { movie -> remoteKeyDataSource.get(movie.id) }
-    }
-
-    /**
-     * get the closest remote key inserted which had the data
-     */
-    private suspend fun getClosestRemoteKey(state: PagingState<Int, Movie>): RemoteKey? {
-        return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.id?.let { id ->
-                remoteKeyDataSource.get(id)
-            }
         }
     }
 }

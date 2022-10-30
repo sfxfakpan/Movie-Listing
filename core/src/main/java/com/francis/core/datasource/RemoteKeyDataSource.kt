@@ -8,5 +8,9 @@ interface RemoteKeyDataSource {
 
     suspend fun get(id: Int): RemoteKey?
 
+    suspend fun getLastOrNull(): RemoteKey?
+
+    suspend fun getCount(): Int?
+
     suspend fun nuke()
 }

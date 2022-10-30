@@ -12,7 +12,7 @@ class GenreConverter {
     private val gson = Gson()
 
     @TypeConverter
-    fun fromGenre(list: List<Genre>): String = gson.toJson(list)
+    fun fromGenre(list: List<Genre>?): String? = gson.toJson(list)
 
     @TypeConverter
     fun toGenre(json: String): List<Genre> {

@@ -27,12 +27,12 @@ object Api {
     interface MoviesService {
 
         @GET("/$API_VERSION/discover/movie")
-        fun fetchDiscoverList(@Query("page") page: Int): Response<MoviesResponse>
+        suspend fun fetchDiscoverList(@Query("page") page: Int?): Response<MoviesResponse>
 
         @GET("/$API_VERSION/movie/{id}/credits")
-        fun fetchCredits(@Path("id") id: Int): Response<CreditsResponse>
+        suspend fun fetchCredits(@Path("id") id: Int): Response<CreditsResponse>
 
         @GET("/$API_VERSION/movie/{id}/videos")
-        fun fetchVideos(@Path("id") id: Int): Response<VideosResponse>
+        suspend fun fetchVideos(@Path("id") id: Int): Response<VideosResponse>
     }
 }

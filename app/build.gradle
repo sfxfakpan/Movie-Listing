@@ -2,7 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -21,10 +22,19 @@ android {
     }
 
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    dataBinding {
+        enabled true
+    }
+    buildFeatures {
+        viewBinding true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -56,12 +66,28 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-    implementation "androidx.navigation:navigation-fragment-ktx:2.5.2"
-    implementation "androidx.navigation:navigation-ui-ktx:2.5.2"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
 
-    //Paging
-    def paging_version = "3.1.1"
-    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    //hilt for DI
+    def hilt_version = '2.41'
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    //Room
+    def roomVersion = "2.4.1"
+    implementation("androidx.room:room-runtime:$roomVersion") {
+        exclude group: 'com.google.code.gson'
+    }
+    implementation("androidx.room:room-ktx:$roomVersion") {
+        exclude group: 'com.google.code.gson'
+    }
+    kapt "androidx.room:room-compiler:$roomVersion"
+    androidTestImplementation("androidx.room:room-testing:$roomVersion") {
+        exclude group: 'com.google.code.gson'
+    }
+
+    implementation "io.coil-kt:coil:2.2.2"
 
     implementation project(':core')
 }
